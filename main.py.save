@@ -1,0 +1,41 @@
+import os
+import telebot
+from telebot import types
+
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+bot = telebot.TeleBot(BOT_TOKEN)
+
+CHANNEL_USERNAME = "@kazhbeen"
+FILE_ID = "AAMCBAADGQEB_HEGaCEF0HNKoc_76phrXDLzY9zk7AkAAsEaAAJzrQlRx5bWp9p-DVwBAAdtAAM2BA"
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    user_id = message.chat.id
+    try:
+        member = bot.get_chat_member(CHANNEL_USERNAME, user_id)
+        if member.status in ["member", "administrator", "creator"]:
+            bot.send_message(user_id, "✅ شما عضو کانال هستید. فایل آموزش برای شما ارسال می‌شود.")
+            bot.send_document(user_id, FILE_ID)
+        else:
+            send_join_message(user_id)
+    except:
+        send_join_message(user_id)
+
+def send_join_message(user_id):
+    markup = types.InlineKeyboardMarkup()
+    join_btn = types.InlineKeyboardButton("عضویت در کانال کژبین", url="https://t.me/kazhbeen")
+    check_btn = types.InlineKeyboardButton("بررسی عضویت ✅", callback_data="check")
+    markup.add(join_btn)
+    markup.add(check_btn)
+    bot.send_message(user_id, "سلام به کژبات خوش اومدید 🌟\nبرای استفاده از بات لطفا در چنل کژبین عضو بشید 👇", reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call: call.data == "check")
+def check_membership(call):
+    user_id = call.from_user.id
+    try:
+        member = bot.get_chat_member(CHANNEL_USERNAME, user_id)
+        if member.status in ["member", "administrator", "creator"]:
+            bot.send_message(user_id, "✅ عضویت تایید شد. فایل آموزش برای شما ارسال می‌شود.")
+            bot.send_document(user_id, FILE_ID)
+        else:
+     
