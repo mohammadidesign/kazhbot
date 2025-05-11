@@ -1,0 +1,15 @@
+nano requirements.txt
+
+nano requirements.txt
+pyTelegramBotAPI==4.7.0
+pyTelegramBotAPI==4.7.0
+pyTelegramBotAPI==4.7.0
+nano .gitignore
+.env
+*.webp
+*.jpg
+*.png
+*.jpeg
+__pycache__/
+nano .env
+BOT_TOKEN=7206045390:AAGldVMtruNrP9uxocJw3guqBrHu_pnsgmo
